@@ -37,15 +37,15 @@ storage:
     - '129.114.108.35:9115'
 rpc: 
   storageTimeout: 5000
-beneficiary: 'ea674fdde714fd979de3edf0f56aa9716b898ec8'
+  verifierTimeout: 5000
+  rescanInterval : 5000
+beneficiary: '2b5ad5c4795c026514f8317c7a215e218dccd6cf'
 blockReward: 50000
-# genesisBlock: 'genesis.bin'
-# genesisData: 'genesis.json'
+disableNonceCheck: false
+generateFromAccounts : false
 genesisBlock: 'simple.bin'
 genesisData: 'simple.json'
-# Required for parallel client submissions, since
-# the client will submit txes out of order
-disableNonceCheck: true
-# Needed because beneficiaries will not have
-# been generated
-generateFromAccounts : true
+# Will be added dynamically
+# pruneDepth: 1
+# verifiers:
+#   - 'localhost:9000'

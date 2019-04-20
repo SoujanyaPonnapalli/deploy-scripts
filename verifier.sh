@@ -7,7 +7,7 @@ VSERVERS=($(<./$3))
 
 stop() {
   for ((i = 0; i < ${#VSERVERS[@]}; i++)); do
-    ssh -i ./disaggregatedblockchain.pem ${USERNAME}@${VSERVERS[i]} '
+    ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${VSERVERS[i]} '
         kill -9 $(pgrep -f verifier)
     ' 
   done
@@ -15,8 +15,10 @@ stop() {
 
 start(){
     for (( i=0; i<$1; i++ )); do
-        echo "Verifer: ${VSERVERS[i]}"
-        ssh -i ./disaggregatedblockchain.pem ${USERNAME}@${VSERVERS[i]} "cd ~/sosp19/verifier; node --max-old-space-size=122880 -r ts-node/register src/verifier serve | tee ../../logs/verifier${i}.logs" &
+        num=$(( i % ${#VSERVERS[@]} ))
+        scp ./config/verifierConfig${i}.yml ${USERNAME}@${VSERVERS[num]}:~/sosp19/verifier/sample/verifierConfig${i}.yml
+        echo "Verifer: ${VSERVERS[num]}"
+        ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${VSERVERS[num]} "cd ~/sosp19/verifier; node --max-old-space-size=122880 -r ts-node/register src/verifier serve --config ./sample/verifierConfig${i}.yml| tee ../../logs/verifier${i}.logs" &
     done
 }
 
