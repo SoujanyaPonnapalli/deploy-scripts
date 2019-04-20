@@ -27,10 +27,20 @@ cleanup(){
 	ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${ALL[$1]} "rm -rf ~/logs/*"
 }
 
+summarize(){
+	cat ./logs/${logDir}/verifier0.log | grep "Assembled" | grep -v "Assembled 0" > tmp.txt
+	python throughput.py > ./logs/${logDir}/summary.txt
+	rm tmp.txt
+}
+
 if (($# != 4)); then
   echo "./run.sh numClients clientIPs traceToExecute logDirectory"
 fi
 
 run
 echo "Clients done preexecuting...!"
+
 for ((j = 0; j < ${#ALL[@]}; j++)); do cleanup ${j} & done
+wait
+
+summarize
