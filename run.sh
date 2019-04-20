@@ -33,10 +33,9 @@ run(){
 }
 
 cleanup(){
-	ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]} '
-	kill -9 $(pgrep -f verifier);
-	kill -9 $(pgrep -f server);
-	kill -9 $(pgrep -f rainblock-client)'
+	ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]} 'kill -9 $(pgrep -f server);'
+	ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]} 'kill -9 $(pgrep -f verifier);'
+	ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]} 'kill -9 $(pgrep -f rainblock-client);'
 	scp -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]}:~/logs/* ./logs/${logDir}/ 
 	ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${ALL[$1]} "rm -rf ~/logs/*"
 }
