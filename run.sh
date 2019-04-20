@@ -5,6 +5,7 @@ cnodes=$3
 numVerf=$4
 vPruneDepth=$5
 VSERVERS=($(<./$2))
+ALL=($(<./livenodes))
 numClient=$6
 
 for ((i = 0; i < ${#VSERVERS[@]}; i++)); do
@@ -12,11 +13,13 @@ for ((i = 0; i < ${#VSERVERS[@]}; i++)); do
 done
 
 run(){
-	/bin/bash storage.sh start snodes &
-	sleep 1
-	/bin/bash verifier.sh start ${numVerf} vnodes &
-	sleep 1
-	/bin/bash client.sh start ${numClient} cnodes &
+	sleep 100
+	for ((j = 0; j < ${#VSERVERS[@]}; j++)); do ./client.sh start j cnodes & done
+	wait
+	echo "Everything stopped"
+	for ((j = 0; j < ${#ALL[@]}; j++)); do
+		ssh ${USERNAME}@${ALL[j]} 'kill -9 $(pgrep -f verifier); kill -9 $(pgrep -f server); kill -9 $(pgrep -f rainblock-client)' &
+	done
 }
 
 makeConfig(){
@@ -43,4 +46,4 @@ makeConfig(){
 
 
 makeConfig
-# run
+run
