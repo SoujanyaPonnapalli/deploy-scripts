@@ -5,6 +5,7 @@ cnodes=$3
 numVerf=$4
 vPruneDepth=$5
 VSERVERS=($(<./$2))
+CLIENT=($(<./$3))
 ALL=($(<./livenodes))
 numClient=$6
 
@@ -14,7 +15,7 @@ done
 
 run(){
 	sleep 100
-	for ((j = 0; j < ${#VSERVERS[@]}; j++)); do ./client.sh start j cnodes & done
+	for ((j = 0; j < ${numClient}; j++)); do ./client.sh start j cnodes & done
 	wait
 	echo "Everything stopped"
 	for ((j = 0; j < ${#ALL[@]}; j++)); do
