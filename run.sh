@@ -16,7 +16,6 @@ run(){
 	  ./client.sh start ${j} ${cnodes} ${txnTrace} &
 	done
 	wait
-	echo "Everything stopped"
 }
 
 cleanup(){
@@ -33,4 +32,5 @@ if (($# != 4)); then
 fi
 
 run
+echo "Clients done preexecuting...!"
 for ((j = 0; j < ${#ALL[@]}; j++)); do cleanup ${j} & done

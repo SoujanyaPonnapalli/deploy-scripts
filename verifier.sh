@@ -18,7 +18,7 @@ makeConfig(){
 	for (( v=0; v < ${numVerf}; v++)); do
 		num=$(( v % ${#VSERVERS[@]} ))
 		port=${PORT[num]}
-		echo -e "\t- ${VSERVERS[num]}:${port}" >> ./config/tmp
+		echo -e "  - ${VSERVERS[num]}:${port}" >> ./config/tmp
 		echo "${VSERVERS[num]}:${port}" >> ./config/verf.txt
 		PORT[${num}]=$(( ${PORT[num]} + 1 ))
 	done
