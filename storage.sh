@@ -17,8 +17,8 @@ start() {
     ${USERNAME}@${SSERVERS[k]}:~/sosp19/storage/src/test_data/storageConfig.yml
 
     ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${SSERVERS[k]} "
-        cd /home/cc/sosp19/storage; node -r ts-node/register src/server.ts $k \
-        test_data/storageConfig.yml &> ~/logs/storage${k}.log 
+        cd /home/cc/sosp19/storage; node  --max-old-space-size=122880 -r ts-node/register src/server.ts $k \
+        test_data/storageConfig.yml &> ~/logs/storage${k}.log
     " &
   done
 }
@@ -26,7 +26,8 @@ start() {
 update_storage_container() {
   for ((k = 0; k < 16; k++)); do
     ssh  -i ~/disaggregatedblockchain.pem ${USERNAME}@${SSERVERS[$k]} "
-        cd /home/cc/sosp19/storage; node -r ts-node/register src/server.ts $k &> ~/logs/storage${k}.log 
+        cd /home/cc/sosp19/storage; node  --max-old-space-size=122880 \
+          -r ts-node/register src/server.ts $k &> ~/logs/storage${k}.log
         cd /home/cc/storage; git stash save; git pull origin master
     " &
   done
