@@ -9,13 +9,27 @@ logDir=$4
 mkdir -p ./logs/${logDir}
 
 run(){
-	sleep 100
+	sleep 420
+	pidList=[]
 	for ((j = 0; j < ${numClient}; j++)); do
 	   echo  ${txnTrace}
 	   echo "./client.sh start ${j} ${cnodes} ${txnTrace}";
 	  ./client.sh start ${j} ${cnodes} ${txnTrace} &
+	  pidList[j]=$!
 	done
-	wait
+	while [ 0 -lt 1 ]
+	do
+		for ((j = 0; j < ${numClient}; j++)); do
+			if [ -n ${pidList[j]} -a -e /proc/${pidList[j]} ]; then
+			:
+			else
+				for ((i = 0; i < ${#ALL[@]}; i++)); do cleanup ${i} & done
+				wait
+				summarize
+				exit
+			fi
+		done
+	done
 }
 
 cleanup(){
@@ -39,8 +53,3 @@ fi
 
 run
 echo "Clients done preexecuting...!"
-
-for ((j = 0; j < ${#ALL[@]}; j++)); do cleanup ${j} & done
-wait
-
-summarize
