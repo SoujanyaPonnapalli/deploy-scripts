@@ -5,6 +5,8 @@ ALL=($(<./livenodes))
 numClient=$1
 txnTrace=$3
 USERNAME="cc"
+logDir=$4
+mkdir -p ./logs/${logDir}
 
 run(){
 	sleep 100
@@ -15,16 +17,20 @@ run(){
 	done
 	wait
 	echo "Everything stopped"
-	for ((j = 0; j < ${#ALL[@]}; j++)); do
-		ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[j]} 'kill -9 $(pgrep -f verifier); 
-		kill -9 $(pgrep -f server); 
-		kill -9 $(pgrep -f rainblock-client)' &
-	done
-	# PULL and DELETE LOGS HERE?
 }
 
-if (($# != 3)); then
-  echo "./run.sh numClients clientIPs traceToExecute"
+cleanup(){
+	ssh  -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]} '
+	kill -9 $(pgrep -f verifier);
+	kill -9 $(pgrep -f server);
+	kill -9 $(pgrep -f rainblock-client)'
+	scp -i ~/disaggregatedblockchain.pem  ${USERNAME}@${ALL[$1]}:~/logs/* ./logs/${logDir}/ 
+	ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${ALL[$1]} "rm -rf ~/logs/*"
+}
+
+if (($# != 4)); then
+  echo "./run.sh numClients clientIPs traceToExecute logDirectory"
 fi
 
 run
+for ((j = 0; j < ${#ALL[@]}; j++)); do cleanup ${j} & done
