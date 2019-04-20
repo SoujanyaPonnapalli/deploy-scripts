@@ -9,7 +9,7 @@ logDir=$4
 mkdir -p ./logs/${logDir}
 
 run(){
-	sleep 420
+	sleep 200
 	pidList=[]
 	for ((j = 0; j < ${numClient}; j++)); do
 	   echo  ${txnTrace}
