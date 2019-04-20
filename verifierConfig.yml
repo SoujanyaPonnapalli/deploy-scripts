@@ -36,15 +36,16 @@ storage:
   15:
     - '129.114.108.35:9115'
 rpc: 
-  storageTimeout: 5000
-  verifierTimeout: 5000
-  rescanInterval : 5000
+  storageTimeout: 500000
+  verifierTimeout: 500000
+  rescanInterval : 50000
 beneficiary: '2b5ad5c4795c026514f8317c7a215e218dccd6cf'
 blockReward: 50000
-disableNonceCheck: false
+disableNonceCheck: true
 generateFromAccounts : false
-genesisBlock: 'simple.bin'
-genesisData: 'simple.json'
+genesisBlock: 'genesis10M.bin'
+genesisData: 'genesis10M.json'
+shareBag: true
 # Will be added dynamically
 # pruneDepth: 1
 # verifiers:
