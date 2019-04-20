@@ -39,14 +39,13 @@ rpc:
   storageTimeout: 500000
   verifierTimeout: 500000
   rescanInterval : 50000
-beneficiary: '2b5ad5c4795c026514f8317c7a215e218dccd6cf'
+# beneficiary: '2b5ad5c4795c026514f8317c7a215e218dccd6cf'
 blockReward: 50000
 disableNonceCheck: true
 generateFromAccounts : false
-genesisBlock: 'genesis10M.bin'
-genesisData: 'genesis10M.json'
+genesisBlock: 'state1M.bin'
+genesisData: 'state1M.json'
 shareBag: true
 # Will be added dynamically
-# pruneDepth: 1
+# pruneDepth: 8
 # verifiers:
-#   - 'localhost:9000'
