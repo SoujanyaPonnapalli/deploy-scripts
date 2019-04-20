@@ -21,26 +21,25 @@ for ((i = 0; i < ${numRuns}; i++)); do
 done
 
 # TEST scalability with verifier-verifier
-# TODO: NEEDS SCRIPTS TO RUN WITH MULTIPLE CLIENTS ...
 
+for ((i = 0; i < ${numRuns}; i++)); do
+  ./storage.sh start snodes 8;
+  ./verifier.sh start 3 vnodes 8;
+  ./run.sh 1 cnodes trace1M scale/1client/run${i};
 
-# ./storage.sh start snodes 8;
-# ./verifier.sh start 3 vnodes 8;
-# ./run.sh 1 cnodes trace1M scale/1client/run2;
+  ./storage.sh start snodes 8;
+  ./verifier.sh start 3 vnodes 8;
+  ./run.sh 2 cnodes trace1M scale/2client/run${i};
 
-# ./storage.sh start snodes 8;
-# ./verifier.sh start 3 vnodes 8;
-# ./run.sh 2 cnodes trace1M scale/2client;
+  ./storage.sh start snodes 8;
+  ./verifier.sh start 3 vnodes 8;
+  ./run.sh 4 cnodes trace1M scale/4client/run${i};
 
-# ./storage.sh start snodes 8;
-# ./verifier.sh start 3 vnodes 8;
-# ./run.sh 4 cnodes trace1M scale/4client;
+  ./storage.sh start snodes 8;
+  ./verifier.sh start 3 vnodes 8;
+  ./run.sh 8 cnodes trace1M scale/8client/run${i};
 
-# ./storage.sh start snodes 8;
-# ./verifier.sh start 3 vnodes 8;
-# ./run.sh 8 cnodes trace1M scale/8client;
-
-# ./storage.sh start snodes 8;
-# ./verifier.sh start 3 vnodes 8;
-# ./run.sh 16 cnodes trace1M scale/16client;
-
+  ./storage.sh start snodes 8;
+  ./verifier.sh start 3 vnodes 8;
+  ./run.sh 16 cnodes trace1M scale/16client/run${i};
+done

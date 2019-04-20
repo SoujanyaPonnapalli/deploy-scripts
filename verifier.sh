@@ -50,7 +50,7 @@ start(){
     ssh -i ~/disaggregatedblockchain.pem ${USERNAME}@${VSERVERS[num]} "cd ~/sosp19/verifier; 
     node --max-old-space-size=122880 -r ts-node/register src/verifier serve --wait \
     --config ./sample/verifierConfig${i}.yml &> \
-    ../../logs/verifier${i}.logs" &
+    ../../logs/verifier${i}.log" &
   done
 }
 
